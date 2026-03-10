@@ -1,0 +1,4 @@
+How to use in Codespaces:
+- **Build:** `Ctrl+Shift+B` runs javac on all `.java` files, outputs to `out/`
+- **Run:** `Ctrl+Shift+T` (or Terminal → Run Task → Run)
+- **Debug:** `F5` launches with the debugger attached
