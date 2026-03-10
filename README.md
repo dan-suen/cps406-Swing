@@ -1,4 +1,6 @@
-How to use in Codespaces:
-- **Build:** `Ctrl+Shift+B` runs javac on all `.java` files, outputs to `out/`
-- **Run:** `Ctrl+Shift+T` (or Terminal → Run Task → Run)
-- **Debug:** `F5` launches with the debugger attached
+## How it works once set up:
+1. Open your Codespace — it auto-installs a virtual desktop
+2. In the **Ports** tab in VS Code, click the link for port **6080**
+3. A browser tab opens with a full virtual desktop
+4. Hit `Ctrl+Shift+T` to run your app — the Swing window appears in that browser tab
+5. Share that browser tab URL with your Live Share collaborators so they can see the GUI too

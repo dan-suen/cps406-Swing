@@ -1,0 +1,20 @@
+{
+  "name": "Java Swing",
+  "image": "mcr.microsoft.com/devcontainers/java:21",
+  "features": {
+    "ghcr.io/devcontainers/features/desktop-lite:1": {
+      "password": "changeme",
+      "webPort": 6080
+    }
+  },
+  "forwardPorts": [6080],
+  "postCreateCommand": "echo 'export DISPLAY=:1' >> ~/.bashrc",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "MS-vsliveshare.vsliveshare",
+        "vscjava.vscode-java-pack"
+      ]
+    }
+  }
+}
