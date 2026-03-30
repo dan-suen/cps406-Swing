@@ -1,5 +1,7 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -13,19 +15,40 @@ public class ProductBacklog {
     // ------------------------------------------------------------------ //
     //  Constructor
     // ------------------------------------------------------------------ //
-    public ProductBacklog() { }
+    // --- Fields ---
+    private List<BacklogItem> items;
 
-    public void addItem(BacklogItem item) { }
+    // ------------------------------------------------------------------ //
+    //  Constructor
+    // ------------------------------------------------------------------ //
+    public ProductBacklog() {
+        this.items = new ArrayList<>();
+    }
 
+    public void addItem(BacklogItem item) {
+        if (item != null && !items.contains(item)) {
+            item.setStatus(BacklogItem.Status.IN_PRODUCT_BACKLOG);
+            items.add(item);
+        }
+    }
 
     public void editItem(BacklogItem item,
                          BacklogItem.Priority priority,
                          double timeEstimate,
                          double effortEstimate,
-                         double riskLevel) { }
+                         double riskLevel) {
+        if (item != null && items.contains(item)) {
+            item.setPriority(priority);
+            item.setTimeEstimate(timeEstimate);
+            item.setEffortEstimate(effortEstimate);
+            item.setRiskLevel(riskLevel);
+        }
+    }
 
+    public void removeItem(BacklogItem item) {
+        items.remove(item);
+    }
 
-    public void removeItem(BacklogItem item) { }
 
     // ------------------------------------------------------------------ //
     //  Sprint proposal generation  (Req 6)
@@ -38,7 +61,24 @@ public class ProductBacklog {
      * @param capacityHours  the team's sprint capacity in hours
      * @return ordered list of proposed BacklogItems
      */
-    public List<BacklogItem> generateSprintProposal(double capacityHours) { return null; }
+    public List<BacklogItem> generateSprintProposal(double capacityHours) {
+        List<BacklogItem> sorted = getItemsSortedByPriority();
+        List<BacklogItem> proposal = new ArrayList<>();
+        double totalEffort = 0;
+
+        for (BacklogItem item : sorted) {
+            // Only consider items that are still in the product backlog
+            if (item.getStatus() != BacklogItem.Status.IN_PRODUCT_BACKLOG) {
+                continue;
+            }
+            double effort = item.getEffortEstimate();
+            if (totalEffort + effort <= capacityHours) {
+                proposal.add(item);
+                totalEffort += effort;
+            }
+        }
+        return proposal;
+    }
 
     // ------------------------------------------------------------------ //
     //  Re-ingestion after sprint end
@@ -49,18 +89,47 @@ public class ProductBacklog {
      * product backlog with its original priority and a revised effort estimate.
      * Req 10
      */
-    public void returnUnfinishedItem(BacklogItem item, double revisedEffort) { }
+    public void returnUnfinishedItem(BacklogItem item, double revisedEffort) {
+        if (item == null) return;
+        item.setEffortEstimate(revisedEffort);
+        item.setStatus(BacklogItem.Status.IN_PRODUCT_BACKLOG);
+        if (!items.contains(item)) {
+            items.add(item);
+        }
+    }
+
 
     // ------------------------------------------------------------------ //
     //  Queries
     // ------------------------------------------------------------------ //
 
     /** Returns all items sorted by priority (High → Medium → Low). */
-    public List<BacklogItem> getItemsSortedByPriority() { return null; }
+    public List<BacklogItem> getItemsSortedByPriority() {
+        List<BacklogItem> sorted = new ArrayList<>(items);
+        sorted.sort(Comparator.comparingInt(item -> {
+            switch (item.getPriority()) {
+                case HIGH:   return 0;
+                case MEDIUM: return 1;
+                case LOW:    return 2;
+                default:     return 3;
+            }
+        }));
+        return sorted;
+    }
 
     /** Returns a copy of the full item list (unsorted). */
-    public List<BacklogItem> getAllItems() { return null; }
+    public List<BacklogItem> getAllItems() {
+        return new ArrayList<>(items);
+    }
 
     /** Returns the item matching the given title, or null if not found. */
-    public BacklogItem findItemByTitle(String title) { return null; }
+    public BacklogItem findItemByTitle(String title) {
+        if (title == null) return null;
+        for (BacklogItem item : items) {
+            if (title.equals(item.getTitle())) {
+                return item;
+            }
+        }
+        return null;
+    }
 }

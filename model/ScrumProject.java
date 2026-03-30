@@ -19,7 +19,13 @@ public class ScrumProject {
     // ------------------------------------------------------------------ //
     //  Constructor
     // ------------------------------------------------------------------ //
-    public ScrumProject() { }
+    public ScrumProject() {
+        this.productBacklog  = new ProductBacklog();
+        this.sprintBacklogs  = new ArrayList<>();
+        this.userStore       = new UserStore();
+        this.currentUser     = null;
+    }
+
 
     // ------------------------------------------------------------------ //
     //  Authentication
@@ -30,23 +36,41 @@ public class ScrumProject {
      *
      * @return the authenticated User, or null on failure
      */
-    public User login(String username, String password) { return null; }
+    public User login(String username, String password) {
+        User user = userStore.authenticate(username, password);
+        if (user != null) {
+            this.currentUser = user;
+        }
+        return user;
+    }
 
     /** Clears the current session. */
-    public void logout() { }
+    public void logout() {
+        this.currentUser = null;
+    }
 
     // ------------------------------------------------------------------ //
     //  Sprint management 
     // ------------------------------------------------------------------ //
 
     /** Creates and registers a new SprintBacklog. */
-    public SprintBacklog createSprint(double capacityHours) { return null; }
+    public SprintBacklog createSprint(double capacityHours) {
+        int sprintNumber = sprintBacklogs.size() + 1;
+        SprintBacklog sprint = new SprintBacklog(sprintNumber, capacityHours);
+        sprintBacklogs.add(sprint);
+        return sprint;
+    }
 
     /** Returns all sprint backlogs in order. */
-    public List<SprintBacklog> getAllSprints() { return null; }
+    public List<SprintBacklog> getAllSprints() {
+        return new ArrayList<>(sprintBacklogs);
+    }
 
     /** Returns the most recent (current) sprint, or null. */
-    public SprintBacklog getCurrentSprint() { return null; }
+    public SprintBacklog getCurrentSprint() {
+        if (sprintBacklogs.isEmpty()) return null;
+        return sprintBacklogs.get(sprintBacklogs.size() - 1);
+    }
 
     // ------------------------------------------------------------------ //
     //  Getters
