@@ -1,12 +1,12 @@
-package src.test.java.model;
+package model;
 
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.MethodOrderer.OrderAnnotation;
 import static org.junit.jupiter.api.Assertions.*;
 
-import src.main.java.model.BacklogItem;
-import src.main.java.model.BacklogItem.Priority;
-import src.main.java.model.BacklogItem.Status;
+import model.BacklogItem;
+import model.BacklogItem.Priority;
+import model.BacklogItem.Status;
 
 import java.util.List;
 
@@ -81,13 +81,13 @@ public class ScrumBacklogTest {
     // Fixtures — recreated fresh before every test
     // ----------------------------------------------------------------
 
-    private src.main.java.model.ProductBacklog productBacklog;
-    private src.main.java.model.SprintBacklog  sprintBacklog;
-    private src.main.java.model.ScrumProject   project;
+    private model.ProductBacklog productBacklog;
+    private model.SprintBacklog  sprintBacklog;
+    private model.ScrumProject   project;
 
     @BeforeEach
     void setUp() {
-        project        = new src.main.java.model.ScrumProject();
+        project        = new model.ScrumProject();
         productBacklog = project.getProductBacklog();
         // SprintBacklog(sprintNumber=1, capacityHours=20)
         sprintBacklog  = project.createSprint(20);
@@ -134,8 +134,8 @@ public class ScrumBacklogTest {
      */
     @Test @Order(20)
     void req2_multipleSprintBacklogsCanBeCreated() {
-        src.main.java.model.SprintBacklog sprint1 = project.createSprint(20);
-        src.main.java.model.SprintBacklog sprint2 = project.createSprint(15);
+        model.SprintBacklog sprint1 = project.createSprint(20);
+        model.SprintBacklog sprint2 = project.createSprint(15);
         assertNotSame(sprint1, sprint2,
             "REQ-2: Sprint Backlogs must be independent objects.");
         assertEquals(20, sprint1.getCapacityHours(), 0.001);
@@ -151,8 +151,8 @@ public class ScrumBacklogTest {
         BacklogItem item = new BacklogItem("Isolated story", "", Priority.HIGH, 5, 5, 0);
         productBacklog.addItem(item);
 
-        src.main.java.model.SprintBacklog sprint1 = project.createSprint(20);
-        src.main.java.model.SprintBacklog sprint2 = project.createSprint(20);
+        model.SprintBacklog sprint1 = project.createSprint(20);
+        model.SprintBacklog sprint2 = project.createSprint(20);
 
         sprint1.setProposedItems(List.of(item));
         sprint1.approve();
@@ -541,7 +541,7 @@ public class ScrumBacklogTest {
 
         assertEquals(Status.IN_SPRINT, item.getStatus(),
             "REQ-8 [TC:approveSprint]: Approved item must have status IN_SPRINT.");
-        assertEquals(src.main.java.model.SprintBacklog.SprintState.ACTIVE, sprintBacklog.getState(),
+        assertEquals(model.SprintBacklog.SprintState.ACTIVE, sprintBacklog.getState(),
             "REQ-8 [TC:approveSprint]: Sprint must be ACTIVE after approval.");
     }
 
@@ -557,7 +557,7 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(item));
         sprintBacklog.reject();
 
-        assertEquals(src.main.java.model.SprintBacklog.SprintState.PROPOSED, sprintBacklog.getState(),
+        assertEquals(model.SprintBacklog.SprintState.PROPOSED, sprintBacklog.getState(),
             "REQ-8 [TC:rejectSprint]: Sprint must return to PROPOSED after rejection.");
         assertEquals(Status.IN_PRODUCT_BACKLOG, item.getStatus(),
             "REQ-8 [TC:rejectSprint]: Item status must remain IN_PRODUCT_BACKLOG.");
@@ -615,7 +615,7 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(item));
         sprintBacklog.approve();
 
-        assertEquals(src.main.java.model.SprintBacklog.SprintState.ACTIVE, sprintBacklog.getState(),
+        assertEquals(model.SprintBacklog.SprintState.ACTIVE, sprintBacklog.getState(),
             "REQ-9: Sprint must be ACTIVE once items are approved.");
     }
 
@@ -625,7 +625,7 @@ public class ScrumBacklogTest {
      */
     @Test @Order(91)
     void req9_freshSprintIsNotActive() {
-        assertNotEquals(src.main.java.model.SprintBacklog.SprintState.ACTIVE, sprintBacklog.getState(),
+        assertNotEquals(model.SprintBacklog.SprintState.ACTIVE, sprintBacklog.getState(),
             "REQ-9: A newly created Sprint Backlog must not be active.");
     }
 
@@ -707,7 +707,7 @@ public class ScrumBacklogTest {
         item.setStatus(Status.COMPLETE);
         sprintBacklog.endSprint(productBacklog);
 
-        assertEquals(src.main.java.model.SprintBacklog.SprintState.COMPLETE, sprintBacklog.getState(),
+        assertEquals(model.SprintBacklog.SprintState.COMPLETE, sprintBacklog.getState(),
             "REQ-10: Sprint must be COMPLETE after endSprint().");
     }
 
@@ -751,8 +751,8 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(parent));
         sprintBacklog.approve();
 
-        src.main.java.model.EngineeringTask task =
-            new src.main.java.model.EngineeringTask("Build login form", "desc", 3, parent);
+        model.EngineeringTask task =
+            new model.EngineeringTask("Build login form", "desc", 3, parent);
 
         assertSame(parent, task.getParentItem(),
             "REQ-11 [TC:createETasks]: Engineering task must reference its parent BacklogItem.");
@@ -771,12 +771,12 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(parent));
         sprintBacklog.approve();
 
-        src.main.java.model.EngineeringTask t1 =
-            new src.main.java.model.EngineeringTask("Sub-task 1", "", 3, parent);
-        src.main.java.model.EngineeringTask t2 =
-            new src.main.java.model.EngineeringTask("Sub-task 2", "", 3, parent);
-        src.main.java.model.EngineeringTask t3 =
-            new src.main.java.model.EngineeringTask("Sub-task 3", "", 4, parent);
+        model.EngineeringTask t1 =
+            new model.EngineeringTask("Sub-task 1", "", 3, parent);
+        model.EngineeringTask t2 =
+            new model.EngineeringTask("Sub-task 2", "", 3, parent);
+        model.EngineeringTask t3 =
+            new model.EngineeringTask("Sub-task 3", "", 4, parent);
 
         assertSame(parent, t1.getParentItem());
         assertSame(parent, t2.getParentItem());
@@ -798,8 +798,8 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(parentA, parentB));
         sprintBacklog.approve();
 
-        src.main.java.model.EngineeringTask taskA =
-            new src.main.java.model.EngineeringTask("Task for A", "", 2, parentA);
+        model.EngineeringTask taskA =
+            new model.EngineeringTask("Task for A", "", 2, parentA);
 
         assertSame(parentA, taskA.getParentItem());
         assertNotSame(parentB, taskA.getParentItem(),
@@ -817,8 +817,8 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(parent));
         sprintBacklog.approve();
 
-        src.main.java.model.EngineeringTask task =
-            new src.main.java.model.EngineeringTask("Sub-task", "desc", 2, parent);
+        model.EngineeringTask task =
+            new model.EngineeringTask("Sub-task", "desc", 2, parent);
 
         assertEquals(Priority.HIGH, task.getPriority(),
             "REQ-12: New engineering task must inherit HIGH priority from parent.");
@@ -835,10 +835,10 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(parent));
         sprintBacklog.approve();
 
-        src.main.java.model.EngineeringTask t1 =
-            new src.main.java.model.EngineeringTask("Child 1", "", 2, parent);
-        src.main.java.model.EngineeringTask t2 =
-            new src.main.java.model.EngineeringTask("Child 2", "", 2, parent);
+        model.EngineeringTask t1 =
+            new model.EngineeringTask("Child 1", "", 2, parent);
+        model.EngineeringTask t2 =
+            new model.EngineeringTask("Child 2", "", 2, parent);
 
         parent.setPriority(Priority.HIGH);
         t1.syncPriorityFromParent();
@@ -861,8 +861,8 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(parent));
         sprintBacklog.approve();
 
-        src.main.java.model.EngineeringTask task =
-            new src.main.java.model.EngineeringTask("Task", "", 1, parent);
+        model.EngineeringTask task =
+            new model.EngineeringTask("Task", "", 1, parent);
 
         parent.setPriority(Priority.LOW);
         task.syncPriorityFromParent();
@@ -884,8 +884,8 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(parent));
         sprintBacklog.approve();
 
-        src.main.java.model.EngineeringTask task =
-            new src.main.java.model.EngineeringTask("Original title", "", 3, parent);
+        model.EngineeringTask task =
+            new model.EngineeringTask("Original title", "", 3, parent);
 
         task.setTitle("Updated title");
         task.setEffortEstimate(2);
@@ -907,10 +907,10 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(parent));
         sprintBacklog.approve();
 
-        src.main.java.model.EngineeringTask t1 =
-            new src.main.java.model.EngineeringTask("Task 1", "", 3, parent);
-        src.main.java.model.EngineeringTask t2 =
-            new src.main.java.model.EngineeringTask("Task 2", "", 5, parent);
+        model.EngineeringTask t1 =
+            new model.EngineeringTask("Task 1", "", 3, parent);
+        model.EngineeringTask t2 =
+            new model.EngineeringTask("Task 2", "", 5, parent);
 
         assertNotEquals(t1.getEffortEstimate(), t2.getEffortEstimate(), 0.001,
             "REQ-13: Sibling tasks must be able to carry independent effort estimates.");
@@ -927,8 +927,8 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(parent));
         sprintBacklog.approve();
 
-        src.main.java.model.EngineeringTask task =
-            new src.main.java.model.EngineeringTask("Task to remove", "", 1, parent);
+        model.EngineeringTask task =
+            new model.EngineeringTask("Task to remove", "", 1, parent);
         String removedId = task.getTaskId();
         task = null; // de-reference
 
@@ -948,10 +948,10 @@ public class ScrumBacklogTest {
         sprintBacklog.setProposedItems(List.of(parent));
         sprintBacklog.approve();
 
-        src.main.java.model.EngineeringTask t1 =
-            new src.main.java.model.EngineeringTask("Keep me",   "", 2, parent);
-        src.main.java.model.EngineeringTask t2 =
-            new src.main.java.model.EngineeringTask("Remove me", "", 3, parent);
+        model.EngineeringTask t1 =
+            new model.EngineeringTask("Keep me",   "", 2, parent);
+        model.EngineeringTask t2 =
+            new model.EngineeringTask("Remove me", "", 3, parent);
         String t1Id = t1.getTaskId();
 
         t2 = null; // de-reference t2
@@ -1211,9 +1211,9 @@ public class ScrumBacklogTest {
      */
     @Test @Order(170)
     void req16_tc_loginUserDashboard_scrumTeamRole() {
-        src.main.java.model.User user = project.login("teamMember", "team123");
+        model.User user = project.login("teamMember", "team123");
         assertNotNull(user, "REQ-16: teamMember must authenticate.");
-        assertEquals(src.main.java.model.User.Role.SCRUM_TEAM, user.getRole(),
+        assertEquals(model.User.Role.SCRUM_TEAM, user.getRole(),
             "REQ-16 [TC:loginUserDashboard]: Must resolve to SCRUM_TEAM.");
     }
 
@@ -1223,9 +1223,9 @@ public class ScrumBacklogTest {
      */
     @Test @Order(171)
     void req16_tc_loginScrumMasterDashboard_scrumMasterRole() {
-        src.main.java.model.User user = project.login("scrummaster", "sm123");
+        model.User user = project.login("scrummaster", "sm123");
         assertNotNull(user, "REQ-16: scrummaster must authenticate.");
-        assertEquals(src.main.java.model.User.Role.SCRUM_MASTER, user.getRole(),
+        assertEquals(model.User.Role.SCRUM_MASTER, user.getRole(),
             "REQ-16 [TC:loginScrumMasterDashboard]: Must resolve to SCRUM_MASTER.");
     }
 
@@ -1235,9 +1235,9 @@ public class ScrumBacklogTest {
      */
     @Test @Order(172)
     void req16_tc_loginProductOwnerDashboard_productOwnerRole() {
-        src.main.java.model.User user = project.login("productowner", "po123");
+        model.User user = project.login("productowner", "po123");
         assertNotNull(user, "REQ-16: productowner must authenticate.");
-        assertEquals(src.main.java.model.User.Role.PRODUCT_OWNER, user.getRole(),
+        assertEquals(model.User.Role.PRODUCT_OWNER, user.getRole(),
             "REQ-16 [TC:loginProductOwnerDashboard]: Must resolve to PRODUCT_OWNER.");
     }
 
@@ -1302,9 +1302,9 @@ public class ScrumBacklogTest {
      */
     @Test @Order(180)
     void req17_scrumTeamRoleCorrectlyResolved() {
-        src.main.java.model.User user = project.login("teamMember", "team123");
+        model.User user = project.login("teamMember", "team123");
         assertNotNull(user);
-        assertEquals(src.main.java.model.User.Role.SCRUM_TEAM, user.getRole(),
+        assertEquals(model.User.Role.SCRUM_TEAM, user.getRole(),
             "REQ-17: SCRUM_TEAM role must be resolvable for role-based routing.");
     }
 
@@ -1314,9 +1314,9 @@ public class ScrumBacklogTest {
      */
     @Test @Order(181)
     void req17_scrumMasterRoleCorrectlyResolved() {
-        src.main.java.model.User user = project.login("scrummaster", "sm123");
+        model.User user = project.login("scrummaster", "sm123");
         assertNotNull(user);
-        assertEquals(src.main.java.model.User.Role.SCRUM_MASTER, user.getRole(),
+        assertEquals(model.User.Role.SCRUM_MASTER, user.getRole(),
             "REQ-17: SCRUM_MASTER role must be resolvable for role-based routing.");
     }
 
@@ -1326,9 +1326,9 @@ public class ScrumBacklogTest {
      */
     @Test @Order(182)
     void req17_productOwnerRoleCorrectlyResolved() {
-        src.main.java.model.User user = project.login("productowner", "po123");
+        model.User user = project.login("productowner", "po123");
         assertNotNull(user);
-        assertEquals(src.main.java.model.User.Role.PRODUCT_OWNER, user.getRole(),
+        assertEquals(model.User.Role.PRODUCT_OWNER, user.getRole(),
             "REQ-17: PRODUCT_OWNER role must be resolvable for role-based routing.");
     }
 
@@ -1338,7 +1338,7 @@ public class ScrumBacklogTest {
      */
     @Test @Order(183)
     void req17_failedLoginReturnsNull() {
-        src.main.java.model.User user = project.login("nobody", "badpass");
+        model.User user = project.login("nobody", "badpass");
         assertNull(user,
             "REQ-17: Unauthenticated login must return null so the caller routes to LOGIN_VIEW.");
     }

@@ -138,8 +138,7 @@ public class SprintBacklog {
             if (item.getStatus() == BacklogItem.Status.COMPLETE) {
                 totalCompletedEffort += item.getEffortEstimate();
             } else {
-                // Unfinished: status becomes DELAYED; re-insert into product backlog
-                item.setStatus(BacklogItem.Status.DELAYED);
+                // Unfinished: re-insert into product backlog (returnUnfinishedItem sets DELAYED)
                 // Use actual effort as the revised estimate if available, else keep original
                 double revisedEffort = item.getActualEffort() > 0
                         ? item.getEffortEstimate() - item.getActualEffort()

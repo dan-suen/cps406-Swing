@@ -61,7 +61,8 @@ public class ProductBacklog {
 
         for (BacklogItem item : sorted) {
             // Only consider items that are still in the product backlog
-            if (item.getStatus() != BacklogItem.Status.IN_PRODUCT_BACKLOG) {
+            if (item.getStatus() != BacklogItem.Status.IN_PRODUCT_BACKLOG
+                    && item.getStatus() != BacklogItem.Status.DELAYED) {
                 continue;
             }
             double effort = item.getEffortEstimate();
@@ -85,7 +86,7 @@ public class ProductBacklog {
     public void returnUnfinishedItem(BacklogItem item, double revisedEffort) {
         if (item == null) return;
         item.setEffortEstimate(revisedEffort);
-        item.setStatus(BacklogItem.Status.IN_PRODUCT_BACKLOG);
+        item.setStatus(BacklogItem.Status.DELAYED);
         if (!items.contains(item)) {
             items.add(item);
         }
