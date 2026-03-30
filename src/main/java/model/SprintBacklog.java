@@ -186,7 +186,7 @@ public class SprintBacklog {
     public SprintState      getState()            { return state; }
     public boolean          isApproved()          { return approved; }
     public double           getCapacityHours()    { return capacityHours; }
-    public List<BacklogItem> getCommittedItems()  { return null; }
+    public List<BacklogItem> getCommittedItems()  { return new ArrayList<>(committedItems); }
     public double           getTotalPlannedEffort()    { return totalPlannedEffort; }
     public double           getTotalCompletedEffort()  { return totalCompletedEffort; }
 }
