@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="model.ScrumBacklogTest" time="0.1" tests="1" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report-3.0.xsd" version="3.0" name="model.ScrumBacklogTest" time="0.667" tests="86" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.jnu.encoding" value="UTF-8"/>
@@ -7,13 +7,13 @@
     <property name="java.vm.vendor" value="Oracle Corporation"/>
     <property name="sun.arch.data.model" value="64"/>
     <property name="java.vendor.url" value="https://java.oracle.com/"/>
+    <property name="user.timezone" value="America/Toronto"/>
     <property name="os.name" value="Linux"/>
     <property name="java.vm.specification.version" value="23"/>
     <property name="sun.java.launcher" value="SUN_STANDARD"/>
     <property name="sun.boot.library.path" value="/usr/lib/jvm/jdk-23.0.2-oracle-x64/lib"/>
-    <property name="sun.java.command" value="/home/derpderp91357/projects/cps406-Swing/target/surefire/surefirebooter-20260330192440545_3.jar /home/derpderp91357/projects/cps406-Swing/target/surefire 2026-03-30T19-24-40_447-jvmRun1 surefire-20260330192440545_1tmp surefire_0-20260330192440545_2tmp"/>
+    <property name="sun.java.command" value="/home/derpderp91357/projects/cps406-Swing/target/surefire/surefirebooter-20260331021733031_3.jar /home/derpderp91357/projects/cps406-Swing/target/surefire 2026-03-31T02-17-32_842-jvmRun1 surefire-20260331021733031_1tmp surefire_0-20260331021733031_2tmp"/>
     <property name="jdk.debug" value="release"/>
-    <property name="test" value="model.ScrumBacklogTest#req10_tc_returnUnfinishedItems_toProductBacklog"/>
     <property name="surefire.test.class.path" value="/home/derpderp91357/projects/cps406-Swing/target/test-classes:/home/derpderp91357/projects/cps406-Swing/target/classes:/home/derpderp91357/.m2/repository/org/junit/jupiter/junit-jupiter/5.10.0/junit-jupiter-5.10.0.jar:/home/derpderp91357/.m2/repository/org/junit/jupiter/junit-jupiter-api/5.10.0/junit-jupiter-api-5.10.0.jar:/home/derpderp91357/.m2/repository/org/opentest4j/opentest4j/1.3.0/opentest4j-1.3.0.jar:/home/derpderp91357/.m2/repository/org/junit/platform/junit-platform-commons/1.10.0/junit-platform-commons-1.10.0.jar:/home/derpderp91357/.m2/repository/org/apiguardian/apiguardian-api/1.1.2/apiguardian-api-1.1.2.jar:/home/derpderp91357/.m2/repository/org/junit/jupiter/junit-jupiter-params/5.10.0/junit-jupiter-params-5.10.0.jar:/home/derpderp91357/.m2/repository/org/junit/jupiter/junit-jupiter-engine/5.10.0/junit-jupiter-engine-5.10.0.jar:/home/derpderp91357/.m2/repository/org/junit/platform/junit-platform-engine/1.10.0/junit-platform-engine-1.10.0.jar:"/>
     <property name="sun.cpu.endian" value="little"/>
     <property name="user.home" value="/home/derpderp91357/"/>
@@ -27,7 +27,7 @@
     <property name="line.separator" value="&#10;"/>
     <property name="java.vm.specification.vendor" value="Oracle Corporation"/>
     <property name="java.specification.name" value="Java Platform API Specification"/>
-    <property name="surefire.real.class.path" value="/home/derpderp91357/projects/cps406-Swing/target/surefire/surefirebooter-20260330192440545_3.jar"/>
+    <property name="surefire.real.class.path" value="/home/derpderp91357/projects/cps406-Swing/target/surefire/surefirebooter-20260331021733031_3.jar"/>
     <property name="sun.management.compiler" value="HotSpot 64-Bit Tiered Compilers"/>
     <property name="java.runtime.version" value="23.0.2+7-58"/>
     <property name="user.name" value="derpderp91357"/>
@@ -37,7 +37,6 @@
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="file.encoding" value="UTF-8"/>
     <property name="java.vm.name" value="Java HotSpot(TM) 64-Bit Server VM"/>
-    <property name="maven.ext.class.path" value="/home/derpderp91357/.vscode-server/extensions/oracle.oracle-java-25.0.1/nbcode/java/maven-nblib/netbeans-eventspy.jar"/>
     <property name="localRepository" value="/home/derpderp91357/.m2/repository"/>
     <property name="java.vendor.url.bug" value="https://bugreport.java.com/bugreport/"/>
     <property name="java.io.tmpdir" value="/tmp"/>
@@ -54,5 +53,90 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
-  <testcase name="req10_tc_returnUnfinishedItems_toProductBacklog" classname="model.ScrumBacklogTest" time="0.058"/>
+  <testcase name="req1_singleSharedProductBacklogExists" classname="model.ScrumBacklogTest" time="0.069"/>
+  <testcase name="req1_productBacklogRetainsAddedItems" classname="model.ScrumBacklogTest" time="0.011"/>
+  <testcase name="req2_multipleSprintBacklogsCanBeCreated" classname="model.ScrumBacklogTest" time="0.009"/>
+  <testcase name="req2_sprintBacklogsAreIndependent" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req3_backlogItemHasAllRequiredFields" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req3_riskLevelDefaultsToZero" classname="model.ScrumBacklogTest" time="0.006"/>
+  <testcase name="req3_riskLevelCanBeSet" classname="model.ScrumBacklogTest" time="0.006"/>
+  <testcase name="req3_allThreePriorityLevelsExist" classname="model.ScrumBacklogTest" time="0.013"/>
+  <testcase name="req4_tc_addBacklogItem_validItemAppearsInBacklog" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req4_multipleItemsCanBeAdded" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req4_addItemWithoutRiskSucceeds" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req5_tc_editBacklogItem_priorityTimeEffortUpdated" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="req5_editBacklogItem_riskUpdated" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req5_editDoesNotCorruptOtherItems" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req4_tc_deleteBacklogItem_itemRemovedFromList" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req4_deleteOneItemLeavesOthersIntact" classname="model.ScrumBacklogTest" time="0.006"/>
+  <testcase name="req6_tc_generateProposal_capacityFit" classname="model.ScrumBacklogTest" time="0.02"/>
+  <testcase name="req6_tc_generateProposal_highPrioritySelectedFirst" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req6_mediumPriorityBeforeLowInProposal" classname="model.ScrumBacklogTest" time="0.006"/>
+  <testcase name="req6_oversizedItemExcludedFromProposal" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req6_zeroCapacityProducesEmptyProposal" classname="model.ScrumBacklogTest" time="0.006"/>
+  <testcase name="req6_emptyBacklogProducesEmptyProposal" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req7_scrumMasterCanAddItemToProposal" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req7_scrumMasterCanRemoveItemFromProposal" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req7_proposalEditsDoNotMutateProductBacklog" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req8_tc_approveSprint_itemsMovedAndLocked" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req8_tc_rejectSprint_itemsRemainEditable" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req8_afterRejectionProposalIsEditable" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req8_multipleItemsAllLockedOnApproval" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req9_sprintIsActiveAfterApproval" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req9_freshSprintIsNotActive" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req9_sprintItemsLockedAfterApproval" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req10_tc_returnUnfinishedItems_toProductBacklog" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req10_finishedItemsNotReturnedAtSprintEnd" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req10_sprintCompleteAfterEnd" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req10_mixedSprintOnlyUnfinishedReturned" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req11_tc_createETasks_linkedToParent" classname="model.ScrumBacklogTest" time="0.014"/>
+  <testcase name="req11_multipleTasksPerSprintItem" classname="model.ScrumBacklogTest" time="0.006"/>
+  <testcase name="req11_tasksDoNotCrossParents" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="req12_newTaskInheritsParentPriority" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req12_priorityChangePropagatestoAllChildren" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req12_priorityPropagationAllDirections" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req13_tc_editETasks_titleAndEffortUpdated" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req13_siblingTasksHaveIndependentEffort" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req13_tc_removeETasks_taskCanBeDiscarded" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req13_removeOneTaskLeavesOthersIntact" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="req11_tc_completeBacklogItem_statusSetComplete" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req11_tc_completeBacklogItem_statusSetDelayed" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="req11_completedItemNotAlsoDelayed" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req14_tc_logTime_actualTimeAndEffortUpdated" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req14_logTimeAccumulatesAcrossMultipleCalls" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req14_initialActualTimeAndEffortAreZero" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req14_logTimeDoesNotCrossItems" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req15_tc_displayVelocity_equalsCompletedEffort" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req15_velocityZeroWhenNothingCompleted" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req15_velocityExcludesDelayedAndUnfinishedItems" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req15_burndownDataCanBeRecordedAndRetrieved" classname="model.ScrumBacklogTest" time="0.035"/>
+  <testcase name="req15_burndownTotalAtSprintStartEqualsAllEffort" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req16_tc_loginUserDashboard_scrumTeamRole" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="req16_tc_loginScrumMasterDashboard_scrumMasterRole" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req16_tc_loginProductOwnerDashboard_productOwnerRole" classname="model.ScrumBacklogTest" time="0.006"/>
+  <testcase name="req16_wrongPasswordReturnsNull" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req16_unknownUsernameReturnsNull" classname="model.ScrumBacklogTest" time="0.005"/>
+  <testcase name="req16_emptyUsernameReturnsNull" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req16_emptyPasswordReturnsNull" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="req16_credentialsAreCaseSensitive" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="req17_scrumTeamRoleCorrectlyResolved" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req17_scrumMasterRoleCorrectlyResolved" classname="model.ScrumBacklogTest" time="0.002"/>
+  <testcase name="req17_productOwnerRoleCorrectlyResolved" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="req17_failedLoginReturnsNull" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="reg_registeredUserCanLogin" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="reg_registeredUserHasCorrectRole" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="reg_duplicateUsernameReturnsFalse" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="reg_duplicateAttemptDoesNotOverwritePassword" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="reg_cannotRegisterExistingDefaultUsername" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="backlog_newItemHasNoAssignee" classname="model.ScrumBacklogTest" time="0.002"/>
+  <testcase name="backlog_assigneeCanBeSetAndRetrieved" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="backlog_assigneeCanBeReassigned" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="backlog_newItemHasEmptyTaskList" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="backlog_taskCanBeAddedAndRetrieved" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="backlog_duplicateTaskNotAdded" classname="model.ScrumBacklogTest" time="0.002"/>
+  <testcase name="backlog_multipleTasksCanBeAdded" classname="model.ScrumBacklogTest" time="0.004"/>
+  <testcase name="backlog_taskCanBeRemoved" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="backlog_removingOneTaskLeavesOthersIntact" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="backlog_getTasksReturnsDefensiveCopy" classname="model.ScrumBacklogTest" time="0.003"/>
+  <testcase name="backlog_tasksDoNotLeakBetweenItems" classname="model.ScrumBacklogTest" time="0.003"/>
 </testsuite>

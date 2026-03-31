@@ -1,5 +1,7 @@
 package model;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,9 @@ public class SprintBacklog {
 
     // Burndown: map of day -> remaining effort
     private java.util.Map<Integer, Double> burndownData;
+
+    // Date the sprint was started
+    private LocalDate startDate;
 
     // ------------------------------------------------------------------ //
     //  Constructor
@@ -119,10 +124,9 @@ public class SprintBacklog {
     // ------------------------------------------------------------------ //
 
     /** Start the sprint; locks all committed items.*/
-     public void startSprint() {
+    public void startSprint() {
         if (approved && state == SprintState.ACTIVE) {
-            // Items are already locked into committedItems during approve()
-            // Initialise burndown with total planned effort on day 0
+            startDate = LocalDate.now();
             burndownData.put(0, totalPlannedEffort);
         }
     }
@@ -154,10 +158,23 @@ public class SprintBacklog {
     //  Progress
     // ------------------------------------------------------------------ //
 
-    /**
-     * Record remaining effort for the current day (burndown snapshot).  Req 15
-     *
-     */
+    /** Returns how many days have elapsed since the sprint started, or -1 if not started. */
+    public int getCurrentDay() {
+        if (startDate == null) return -1;
+        return (int) ChronoUnit.DAYS.between(startDate, LocalDate.now());
+    }
+
+    /** Calculates remaining effort as planned minus completed effort. */
+    public double calculateRemainingEffort() {
+        double completed = 0;
+        for (BacklogItem item : committedItems) {
+            if (item.getStatus() == BacklogItem.Status.COMPLETE)
+                completed += item.getEffortEstimate();
+        }
+        return Math.max(0, totalPlannedEffort - completed);
+    }
+
+    /** Record remaining effort for a given day (burndown snapshot). */
     public void recordBurndown(int day, double remainingEffort) {
         burndownData.put(day, remainingEffort);
     }
@@ -179,9 +196,27 @@ public class SprintBacklog {
     }
 
     // ------------------------------------------------------------------ //
+    //  Persistence helpers (package-private, used by ScrumProject only)
+    // ------------------------------------------------------------------ //
+    void restoreState(SprintState s, boolean app, double planned, double completed, LocalDate start) {
+        this.state = s;
+        this.approved = app;
+        this.totalPlannedEffort = planned;
+        this.totalCompletedEffort = completed;
+        this.startDate = start;
+    }
+    void restoreCommittedItems(List<BacklogItem> items) {
+        this.committedItems = new ArrayList<>(items);
+    }
+    void restoreBurndown(Map<Integer, Double> data) {
+        this.burndownData.putAll(data);
+    }
+
+    // ------------------------------------------------------------------ //
     //  Getters
     // ------------------------------------------------------------------ //
     public int              getSprintNumber()     { return sprintNumber; }
+    public LocalDate        getStartDate()        { return startDate; }
     public SprintState      getState()            { return state; }
     public boolean          isApproved()          { return approved; }
     public double           getCapacityHours()    { return capacityHours; }

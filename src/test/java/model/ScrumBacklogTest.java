@@ -1342,4 +1342,205 @@ public class ScrumBacklogTest {
         assertNull(user,
             "REQ-17: Unauthenticated login must return null so the caller routes to LOGIN_VIEW.");
     }
+
+
+    // ================================================================
+    // SECTION 11 — USER REGISTRATION
+    // ================================================================
+
+    /**
+     * A newly registered user must be authenticatable immediately.
+     */
+    @Test @Order(190)
+    void reg_registeredUserCanLogin() {
+        boolean ok = project.registerUser("newdev", "pass123", model.User.Role.SCRUM_TEAM);
+        assertTrue(ok, "registerUser must return true for a fresh username.");
+        assertNotNull(project.login("newdev", "pass123"),
+            "Newly registered user must be able to log in.");
+    }
+
+    /**
+     * Registered user must have the role specified at registration.
+     */
+    @Test @Order(191)
+    void reg_registeredUserHasCorrectRole() {
+        project.registerUser("newowner", "pw", model.User.Role.PRODUCT_OWNER);
+        model.User user = project.login("newowner", "pw");
+        assertNotNull(user);
+        assertEquals(model.User.Role.PRODUCT_OWNER, user.getRole(),
+            "Registered user must have the role specified during registration.");
+    }
+
+    /**
+     * Registering a duplicate username must return false.
+     */
+    @Test @Order(192)
+    void reg_duplicateUsernameReturnsFalse() {
+        boolean first  = project.registerUser("dupuser", "pass1", model.User.Role.SCRUM_TEAM);
+        boolean second = project.registerUser("dupuser", "pass2", model.User.Role.SCRUM_MASTER);
+        assertTrue(first,   "First registration must succeed.");
+        assertFalse(second, "Duplicate username registration must return false.");
+    }
+
+    /**
+     * A duplicate registration attempt must not overwrite the original password.
+     */
+    @Test @Order(193)
+    void reg_duplicateAttemptDoesNotOverwritePassword() {
+        project.registerUser("dupuser2", "original", model.User.Role.SCRUM_TEAM);
+        project.registerUser("dupuser2", "overwrite", model.User.Role.SCRUM_MASTER);
+        assertNotNull(project.login("dupuser2", "original"),
+            "Original password must still work after a failed duplicate registration.");
+        assertNull(project.login("dupuser2", "overwrite"),
+            "Overwrite password must not authenticate.");
+    }
+
+    /**
+     * Registering a username that is already seeded as a default must fail.
+     */
+    @Test @Order(194)
+    void reg_cannotRegisterExistingDefaultUsername() {
+        assertFalse(project.registerUser("productowner", "newpass", model.User.Role.SCRUM_TEAM),
+            "Registering a default account username must fail.");
+    }
+
+
+    // ================================================================
+    // SECTION 12 — BACKLOGITEM ASSIGNEE & TASK MANAGEMENT
+    // ================================================================
+
+    /**
+     * A new BacklogItem must have no assignee.
+     */
+    @Test @Order(200)
+    void backlog_newItemHasNoAssignee() {
+        BacklogItem item = new BacklogItem("Story", "", Priority.HIGH, 3, 3, 0);
+        assertNull(item.getAssignee(), "A new BacklogItem must have no assignee.");
+    }
+
+    /**
+     * Setting an assignee must be retrievable via getAssignee.
+     */
+    @Test @Order(201)
+    void backlog_assigneeCanBeSetAndRetrieved() {
+        BacklogItem item = new BacklogItem("Story", "", Priority.HIGH, 3, 3, 0);
+        item.setAssignee("teamMember");
+        assertEquals("teamMember", item.getAssignee(),
+            "Assignee must be retrievable after setAssignee.");
+    }
+
+    /**
+     * Assignee can be reassigned to a different user.
+     */
+    @Test @Order(202)
+    void backlog_assigneeCanBeReassigned() {
+        BacklogItem item = new BacklogItem("Story", "", Priority.HIGH, 3, 3, 0);
+        item.setAssignee("alice");
+        item.setAssignee("bob");
+        assertEquals("bob", item.getAssignee(),
+            "Reassigning must overwrite the previous assignee.");
+    }
+
+    /**
+     * A new BacklogItem must have an empty task list.
+     */
+    @Test @Order(210)
+    void backlog_newItemHasEmptyTaskList() {
+        BacklogItem item = new BacklogItem("Story", "", Priority.HIGH, 3, 3, 0);
+        assertTrue(item.getTasks().isEmpty(),
+            "A new BacklogItem must have no engineering tasks.");
+    }
+
+    /**
+     * Adding a task must make it retrievable via getTasks.
+     */
+    @Test @Order(211)
+    void backlog_taskCanBeAddedAndRetrieved() {
+        BacklogItem item = new BacklogItem("Story", "", Priority.HIGH, 5, 5, 0);
+        model.EngineeringTask task = new model.EngineeringTask("Write tests", "", 2, item);
+        item.addTask(task);
+        assertTrue(item.getTasks().contains(task),
+            "Added task must be retrievable from the item.");
+    }
+
+    /**
+     * Adding the same task twice must not create a duplicate.
+     */
+    @Test @Order(212)
+    void backlog_duplicateTaskNotAdded() {
+        BacklogItem item = new BacklogItem("Story", "", Priority.HIGH, 5, 5, 0);
+        model.EngineeringTask task = new model.EngineeringTask("Write tests", "", 2, item);
+        item.addTask(task);
+        item.addTask(task);
+        assertEquals(1, item.getTasks().size(),
+            "Adding the same task twice must not create a duplicate.");
+    }
+
+    /**
+     * Multiple distinct tasks can be added to one item.
+     */
+    @Test @Order(213)
+    void backlog_multipleTasksCanBeAdded() {
+        BacklogItem item = new BacklogItem("Story", "", Priority.HIGH, 10, 10, 0);
+        item.addTask(new model.EngineeringTask("Task A", "", 3, item));
+        item.addTask(new model.EngineeringTask("Task B", "", 3, item));
+        item.addTask(new model.EngineeringTask("Task C", "", 4, item));
+        assertEquals(3, item.getTasks().size(),
+            "Three distinct tasks must all be stored.");
+    }
+
+    /**
+     * Removing a task must remove it from the list.
+     */
+    @Test @Order(214)
+    void backlog_taskCanBeRemoved() {
+        BacklogItem item = new BacklogItem("Story", "", Priority.HIGH, 5, 5, 0);
+        model.EngineeringTask task = new model.EngineeringTask("Remove me", "", 2, item);
+        item.addTask(task);
+        item.removeTask(task);
+        assertFalse(item.getTasks().contains(task),
+            "Removed task must no longer appear in the task list.");
+    }
+
+    /**
+     * Removing one task must not affect other tasks on the same item.
+     */
+    @Test @Order(215)
+    void backlog_removingOneTaskLeavesOthersIntact() {
+        BacklogItem item = new BacklogItem("Story", "", Priority.HIGH, 8, 8, 0);
+        model.EngineeringTask keep   = new model.EngineeringTask("Keep",   "", 3, item);
+        model.EngineeringTask remove = new model.EngineeringTask("Remove", "", 5, item);
+        item.addTask(keep);
+        item.addTask(remove);
+        item.removeTask(remove);
+        assertTrue(item.getTasks().contains(keep),
+            "Removing one task must not affect other tasks on the same item.");
+        assertEquals(1, item.getTasks().size());
+    }
+
+    /**
+     * getTasks must return a defensive copy — modifying it must not affect the item's internal list.
+     */
+    @Test @Order(216)
+    void backlog_getTasksReturnsDefensiveCopy() {
+        BacklogItem item = new BacklogItem("Story", "", Priority.HIGH, 5, 5, 0);
+        model.EngineeringTask task = new model.EngineeringTask("Task", "", 2, item);
+        item.addTask(task);
+        item.getTasks().clear();
+        assertEquals(1, item.getTasks().size(),
+            "getTasks must return a defensive copy — clearing it must not affect the item.");
+    }
+
+    /**
+     * A task added to one item must not appear in another item's task list.
+     */
+    @Test @Order(217)
+    void backlog_tasksDoNotLeakBetweenItems() {
+        BacklogItem itemA = new BacklogItem("Story A", "", Priority.HIGH,   5, 5, 0);
+        BacklogItem itemB = new BacklogItem("Story B", "", Priority.MEDIUM, 5, 5, 0);
+        model.EngineeringTask task = new model.EngineeringTask("Task", "", 2, itemA);
+        itemA.addTask(task);
+        assertFalse(itemB.getTasks().contains(task),
+            "Task added to itemA must not appear in itemB's task list.");
+    }
 }

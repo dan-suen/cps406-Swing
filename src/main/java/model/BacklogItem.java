@@ -1,5 +1,8 @@
 package model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Represents a single item in the Product Backlog or Sprint Backlog.
  */
@@ -8,7 +11,7 @@ public class BacklogItem {
     public enum Priority { HIGH, MEDIUM, LOW }
     public enum Status   { IN_PRODUCT_BACKLOG, IN_SPRINT, COMPLETE, DELAYED }
 
-    // Fields 
+    // Fields
     private String   title;
     private String   description;
     private Priority priority;
@@ -20,6 +23,12 @@ public class BacklogItem {
     // Logging
     private double actualTime;
     private double actualEffort;
+
+    // Who has taken on this item
+    private String assignee;
+
+    // Engineering tasks broken down by team members
+    private List<EngineeringTask> tasks;
 
     // ------------------------------------------------------------------ //
     //  Constructor
@@ -38,6 +47,7 @@ public class BacklogItem {
 
         this.actualTime = 0;
         this.actualEffort = 0;
+        this.tasks = new ArrayList<>();
     }
 
     // ------------------------------------------------------------------ //
@@ -75,10 +85,28 @@ public class BacklogItem {
     public void setStatus(Status status) {
         this.status = status;
     }
+    public String getAssignee()            { return assignee; }
+    public void   setAssignee(String a)    { this.assignee = a; }
+
     public void logActualTime(double time) {
         this.actualTime += time;
     }
     public void logActualEffort(double effort) {
         this.actualEffort += effort;
+    }
+
+    // ------------------------------------------------------------------ //
+    //  Engineering task management
+    // ------------------------------------------------------------------ //
+    public void addTask(EngineeringTask task) {
+        if (task != null && !tasks.contains(task)) tasks.add(task);
+    }
+
+    public void removeTask(EngineeringTask task) {
+        tasks.remove(task);
+    }
+
+    public List<EngineeringTask> getTasks() {
+        return new ArrayList<>(tasks);
     }
 }

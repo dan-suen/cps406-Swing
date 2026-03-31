@@ -45,14 +45,16 @@ public class User {
 
 class UserStore {
 
-    private final File userFile = new File("data.txt");
+    private final File userFile = new File("data/users.txt");
     private final Map<String, User> users = new HashMap<>();
 
     // ------------------------------------------------------------------ //
     //  Constructor – seed defaults and load from file
     // ------------------------------------------------------------------ //
     public UserStore() {
-         // Seed one default account per role so the app can be used immediately
+        // DEMO ONLY: one default account per role seeded on every startup.
+        // These are always present regardless of data/users.txt contents.
+        // Credentials are listed in the README under Default Accounts.
         addUser(new User("productowner", "po123",   User.Role.PRODUCT_OWNER), "po123");
         addUser(new User("scrummaster",  "sm123",   User.Role.SCRUM_MASTER),  "sm123");
         addUser(new User("teamMember",   "team123", User.Role.SCRUM_TEAM),    "team123");
@@ -127,6 +129,7 @@ class UserStore {
 
     /** Save all users to file. */
     private void saveUsers() {
+        userFile.getParentFile().mkdirs();
         try (PrintWriter pw = new PrintWriter(new FileWriter(userFile))) {
             for (User u : users.values()) {
                 pw.printf("%s:%s:%s%n", u.getUsername(), u.getPasswordHash(), u.getRole().name());
