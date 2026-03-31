@@ -33,18 +33,18 @@ public class Main {
     private static void seedDemoData(ScrumProject project) {
         ProductBacklog pb = project.getProductBacklog();
 
-        // DEMO: High-priority items
-        pb.addItem(new BacklogItem("User Login",
+        // DEMO: High-priority backlog items — will be committed into Sprint 1
+        BacklogItem login = new BacklogItem("User Login",
             "As a user I can log in with username and password.",
-            Priority.HIGH, 4.0, 5.0, 2.0));
-        pb.addItem(new BacklogItem("Product Backlog View",
+            Priority.HIGH, 4.0, 5.0, 2.0);
+        BacklogItem backlogView = new BacklogItem("Product Backlog View",
             "As a SM I can view and manage all backlog items.",
-            Priority.HIGH, 6.0, 8.0, 1.5));
-        pb.addItem(new BacklogItem("Sprint Proposal Generation",
+            Priority.HIGH, 6.0, 8.0, 1.5);
+        BacklogItem sprintGen = new BacklogItem("Sprint Proposal Generation",
             "As a SM I can auto-generate a sprint proposal from the backlog.",
-            Priority.HIGH, 5.0, 6.0, 2.0));
+            Priority.HIGH, 5.0, 6.0, 2.0);
 
-        // DEMO: Medium-priority items
+        // DEMO: Medium-priority backlog items — remain in product backlog for Sprint 2
         pb.addItem(new BacklogItem("PO Approval Workflow",
             "As a PO I can approve or reject sprint proposals via file notifications.",
             Priority.MEDIUM, 4.0, 5.0, 1.0));
@@ -55,7 +55,7 @@ public class Main {
             "As a SM I can view planned vs completed effort across all sprints.",
             Priority.MEDIUM, 3.0, 3.0, 0.5));
 
-        // DEMO: Low-priority items
+        // DEMO: Low-priority backlog items — remain in product backlog
         pb.addItem(new BacklogItem("Burndown Chart",
             "As a SM I can view a burndown chart for the active sprint.",
             Priority.LOW, 4.0, 4.0, 1.0));
@@ -63,7 +63,30 @@ public class Main {
             "As an admin I can register new users with a role.",
             Priority.LOW, 2.0, 2.0, 0.5));
 
-        // DEMO: persist seeded data immediately
+        // DEMO: Create Sprint 1 and add the high-priority items as proposed
+        pb.addItem(login);
+        pb.addItem(backlogView);
+        pb.addItem(sprintGen);
+        SprintBacklog sprint1 = project.createSprint(30.0);
+        sprint1.setProposedItems(java.util.Arrays.asList(login, backlogView, sprintGen));
+
+        // DEMO: Approve and start Sprint 1 — moves items to committed, sets start date to today
+        sprint1.approve();
+        sprint1.startSprint();
+
+        // DEMO: Mark "User Login" complete so velocity > 0
+        login.setStatus(Status.COMPLETE);
+
+        // DEMO: Inject burndown history for past days so the chart has a visible trend.
+        // Day 0 = sprint start (full planned effort = 19h), declining each day.
+        sprint1.recordBurndown(0, 19.0);
+        sprint1.recordBurndown(1, 16.0);
+        sprint1.recordBurndown(2, 13.5);
+        sprint1.recordBurndown(3, 10.0);
+        sprint1.recordBurndown(4, 8.0);
+        sprint1.recordBurndown(5, 5.0);
+
+        // DEMO: persist all seeded data immediately
         project.save();
     }
 
@@ -73,7 +96,7 @@ public class Main {
     private static void showLogin(ScrumProject project) {
         JFrame frame = new JFrame("Scrum Tool — Login");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(340, 220);
+        frame.setSize(420, 280);
         frame.setLocationRelativeTo(null);
 
         JPanel panel = new JPanel(new GridBagLayout());
