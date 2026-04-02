@@ -276,6 +276,10 @@ public class Main {
             int row = table.getSelectedRow();
             if (row < 0) { msg(panel, "Select an item first."); return; }
             BacklogItem existing = project.getProductBacklog().getAllItems().get(row);
+            if (existing.getStatus() == BacklogItem.Status.IN_SPRINT) {
+                msg(panel, "\"" + existing.getTitle() + "\" is in an active sprint and cannot be edited.");
+                return;
+            }
             BacklogItem updated = itemDialog(panel, existing);
             if (updated != null) {
                 project.getProductBacklog().editItem(existing,
@@ -422,6 +426,7 @@ public class Main {
         // Scrum Team buttons
         JButton doneBtn    = new JButton("Mark Complete");
         JButton logBtn     = new JButton("Log Effort…");
+        JButton logTimeBtn = new JButton("Log Time…");
         JButton takeOnBtn  = new JButton("Take On Item");
         JButton manageBtn  = new JButton("My Tasks for Item…");
 
@@ -494,6 +499,17 @@ public class Main {
             catch (NumberFormatException ex) { msg(panel, "Enter a valid number."); }
         });
 
+        logTimeBtn.addActionListener(e -> {
+            SprintBacklog s = project.getCurrentSprint();
+            if (s == null) { msg(panel, "No sprint."); return; }
+            int row = committedTable.getSelectedRow();
+            if (row < 0) { msg(panel, "Select a committed item."); return; }
+            String val = JOptionPane.showInputDialog(panel, "Actual time to log (hours):", "1.0");
+            if (val == null) return;
+            try { s.getCommittedItems().get(row).logActualTime(Double.parseDouble(val.trim())); project.save(); }
+            catch (NumberFormatException ex) { msg(panel, "Enter a valid number."); }
+        });
+
         takeOnBtn.addActionListener(e -> {
             SprintBacklog s = project.getCurrentSprint();
             if (s == null) { msg(panel, "No sprint."); return; }
@@ -522,11 +538,12 @@ public class Main {
         endBtn.setVisible(isSM);
         doneBtn.setVisible(isTeam);
         logBtn.setVisible(isTeam);
+        logTimeBtn.setVisible(isTeam);
         takeOnBtn.setVisible(isTeam);
         manageBtn.setVisible(isTeam);
 
         JPanel btns = new JPanel(new FlowLayout(FlowLayout.LEFT, 5, 0));
-        for (JButton b : new JButton[]{ genBtn, submitBtn, endBtn, doneBtn, logBtn, takeOnBtn, manageBtn })
+        for (JButton b : new JButton[]{ genBtn, submitBtn, endBtn, doneBtn, logBtn, logTimeBtn, takeOnBtn, manageBtn })
             btns.add(b);
 
         panel.add(btns, BorderLayout.SOUTH);
