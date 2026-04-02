@@ -348,6 +348,7 @@ public class Main {
                     }
                 }
             });
+
         btns.add(addBtn); btns.add(editBtn); btns.add(removeBtn);
         btns.add(new JSeparator(SwingConstants.VERTICAL));
         btns.add(propBtn);
@@ -356,6 +357,7 @@ public class Main {
         panel.add(btns, BorderLayout.SOUTH);
         return panel;
         }
+    
 
     // -------------------------------------------------------------------------
     // Sprint tab

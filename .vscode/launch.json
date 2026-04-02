@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch Scrum Tool",
+      "request": "launch",
+      "mainClass": "Main",
+      "projectName": "406-swing"
+    }
+  ]
+}

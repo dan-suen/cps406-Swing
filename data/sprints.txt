@@ -1,0 +1,11 @@
+number:1
+capacity:30.0
+state:ACTIVE
+approved:true
+plannedEffort:19.0
+completedEffort:5.0
+proposed:User Login,Product Backlog View,Sprint Proposal Generation
+committed:User Login,Product Backlog View,Sprint Proposal Generation
+burndown:0=14.0,1=16.0,2=13.5,3=10.0,4=8.0,5=5.0
+startDate:2026-03-31
+===

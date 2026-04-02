@@ -1,0 +1,15 @@
+model/EngineeringTask.class
+model/User$Role.class
+model/ProductBacklog.class
+model/EngineeringTask$TaskStatus.class
+model/UserStore.class
+model/SprintBacklog$SprintState.class
+model/ScrumProject.class
+Main$1.class
+model/BacklogItem$Priority.class
+Main.class
+model/BacklogItem.class
+model/SprintBacklog.class
+model/User.class
+model/ProductBacklog$1.class
+model/BacklogItem$Status.class
