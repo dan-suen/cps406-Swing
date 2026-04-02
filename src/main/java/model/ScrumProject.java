@@ -111,6 +111,13 @@ public class ScrumProject {
         if (SPRINTS_FILE.exists()) loadSprints();
     }
 
+    /** Discard in-memory backlog/sprints and reload from disk. */
+    public void reload() {
+        this.productBacklog = new ProductBacklog();
+        this.sprintBacklogs = new ArrayList<>();
+        load();
+    }
+
     private void saveBacklog() {
         try (PrintWriter pw = new PrintWriter(new FileWriter(BACKLOG_FILE))) {
             for (BacklogItem item : productBacklog.getAllItems()) {

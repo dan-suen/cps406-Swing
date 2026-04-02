@@ -209,7 +209,7 @@ public class Main {
 
         JMenu userMenu = new JMenu(u.getUsername() + "  [" + u.getRole() + "]");
         JMenuItem logoutItem = new JMenuItem("Logout");
-        logoutItem.addActionListener(e -> { project.logout(); frame.dispose(); showLogin(project); });
+        logoutItem.addActionListener(e -> { project.logout(); project.reload(); frame.dispose(); showLogin(project); });
         userMenu.add(logoutItem);
         mb.add(Box.createHorizontalGlue());
         mb.add(userMenu);
@@ -427,12 +427,17 @@ public class Main {
 
         genBtn.addActionListener(e -> {
             SprintBacklog s = project.getCurrentSprint();
+            if (s != null && s.getState() == SprintBacklog.SprintState.ACTIVE) {
+                msg(panel, "A sprint is already active. End it before creating a new proposal.");
+                return;
+            }
             double defaultCap = s != null ? s.getCapacityHours() : 40.0;
             String cap = JOptionPane.showInputDialog(panel, "Capacity (hours):", String.valueOf(defaultCap));
             if (cap == null) return;
             try {
                 double hours = Double.parseDouble(cap.trim());
-                if (s == null) s = project.createSprint(hours);
+                if (s == null || s.getState() == SprintBacklog.SprintState.COMPLETE)
+                    s = project.createSprint(hours);
                 List<BacklogItem> proposal = project.getProductBacklog().generateSprintProposal(hours);
                 if (proposal.isEmpty()) { msg(panel, "No eligible items fit in that capacity."); return; }
                 s.setProposedItems(proposal);
@@ -444,8 +449,17 @@ public class Main {
         submitBtn.addActionListener(e -> {
             SprintBacklog s = project.getCurrentSprint();
             if (s == null) { msg(panel, "No sprint."); return; }
+            if (s.getState() == SprintBacklog.SprintState.ACTIVE) {
+                msg(panel, "Sprint is already active — nothing to submit.");
+                return;
+            }
+            if (s.getState() == SprintBacklog.SprintState.COMPLETE) {
+                msg(panel, "Sprint is complete. Generate a new proposal first.");
+                return;
+            }
             if (s.getProposedItems().isEmpty()) { msg(panel, "Generate a proposal first."); return; }
             saveProposalFile(s);
+            project.save();
             msg(panel, "Proposal for Sprint #" + s.getSprintNumber()
                 + " submitted. The Product Owner will be notified on next login.");
         });

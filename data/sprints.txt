@@ -1,11 +1,32 @@
 number:1
 capacity:30.0
-state:ACTIVE
+state:COMPLETE
 approved:true
 plannedEffort:19.0
 completedEffort:5.0
 proposed:User Login,Product Backlog View,Sprint Proposal Generation
 committed:User Login,Product Backlog View,Sprint Proposal Generation
-burndown:0=14.0,1=16.0,2=13.5,3=10.0,4=8.0,5=5.0
+burndown:0=14.0,1=14.0,2=13.5,3=10.0,4=8.0,5=5.0
 startDate:2026-03-31
+===
+number:2
+capacity:30.0
+state:COMPLETE
+approved:true
+plannedEffort:30.0
+completedEffort:0.0
+proposed:Product Backlog View,Sprint Proposal Generation,PO Approval Workflow,Team Task Breakdown,Velocity Tracking,Burndown Chart
+committed:Product Backlog View,Sprint Proposal Generation,PO Approval Workflow,Team Task Breakdown,Velocity Tracking,Burndown Chart
+burndown:0=30.0
+startDate:2026-04-01
+===
+number:3
+capacity:30.0
+state:PENDING_APPROVAL
+approved:false
+plannedEffort:0.0
+completedEffort:0.0
+proposed:Product Backlog View,Sprint Proposal Generation,PO Approval Workflow,Team Task Breakdown,Velocity Tracking,Burndown Chart
+committed:
+burndown:
 ===

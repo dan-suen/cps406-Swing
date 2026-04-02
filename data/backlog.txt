@@ -4,7 +4,7 @@ priority:MEDIUM
 time:4.0
 effort:5.0
 risk:1.0
-status:IN_PRODUCT_BACKLOG
+status:DELAYED
 ===
 title:Team Task Breakdown
 desc:As a team member I can break sprint items into engineering sub-tasks.
@@ -12,7 +12,7 @@ priority:MEDIUM
 time:3.0
 effort:4.0
 risk:1.0
-status:IN_PRODUCT_BACKLOG
+status:DELAYED
 ===
 title:Velocity Tracking
 desc:As a SM I can view planned vs completed effort across all sprints.
@@ -20,7 +20,7 @@ priority:MEDIUM
 time:3.0
 effort:3.0
 risk:0.5
-status:IN_PRODUCT_BACKLOG
+status:DELAYED
 ===
 title:Burndown Chart
 desc:As a SM I can view a burndown chart for the active sprint.
@@ -28,7 +28,7 @@ priority:LOW
 time:4.0
 effort:4.0
 risk:1.0
-status:IN_PRODUCT_BACKLOG
+status:DELAYED
 ===
 title:User Registration
 desc:As an admin I can register new users with a role.
@@ -52,7 +52,7 @@ priority:HIGH
 time:6.0
 effort:8.0
 risk:1.5
-status:IN_SPRINT
+status:DELAYED
 ===
 title:Sprint Proposal Generation
 desc:As a SM I can auto-generate a sprint proposal from the backlog.
@@ -60,5 +60,5 @@ priority:HIGH
 time:5.0
 effort:6.0
 risk:2.0
-status:IN_SPRINT
+status:DELAYED
 ===
